@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  html,body{margin:0;padding:0;height:100%;}
+  a{color:#FF4A00;text-decoration:none;} a:hover{color:#ff6a2b;}
+  *{box-sizing:border-box;-webkit-font-smoothing:antialiased;}
+</style>
+</helmet>
+<div style="width:100vw;height:100vh;overflow:hidden;position:relative;font-family:'IBM Plex Mono',monospace;background:linear-gradient(160deg,#e9e9e5 0%,#d6d6d1 100%);" onClick="{{closePopover}}">
+  <div style="position:absolute;inset:0;background-image:radial-gradient(rgba(0,0,0,.05) 1px, transparent 1px);background-size:28px 28px;pointer-events:none;"></div>
+  <!-- menu bar -->
+  <div style="position:absolute;top:0;left:0;right:0;height:32px;display:flex;align-items:center;justify-content:space-between;padding:0 12px;background:rgba(248,248,246,.85);backdrop-filter:blur(20px);color:#1b1b1a;font-size:12px;">
+    <div style="display:flex;gap:18px;align-items:center;">
+      <span style="font-weight:600;">Finder</span><span style="opacity:.7;">File</span><span style="opacity:.7;">Edit</span><span style="opacity:.7;">View</span><span style="opacity:.7;">Window</span>
+    </div>
+    <div style="display:flex;gap:14px;align-items:center;">
+      <div onClick="{{togglePopover}}" style="width:34px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:{{iconBg}};transition:background .2s;" style-hover="background:rgba(0,0,0,.08)">
+        <div style="width:16px;height:11px;border:1.5px solid #1b1b1a;border-radius:2.5px;position:relative;">
+          <div style="position:absolute;left:50%;bottom:-4px;transform:translateX(-50%);width:7px;height:1.5px;background:#1b1b1a;border-radius:1px;"></div>
+          <div style="position:absolute;inset:2px;background:{{iconFill}};border-radius:1px;transition:background .2s;"></div>
+        </div>
+      </div>
+      <span style="opacity:.85;letter-spacing:.02em;">Tue 22 Jul&nbsp;&nbsp;09:41</span>
+    </div>
+  </div>
+  <!-- popover -->
+  <sc-if value="{{open}}" hint-placeholder-val="{{ true }}">
+    <div onClick="{{stop}}" style="position:absolute;top:42px;right:52px;width:324px;border-radius:18px;background:#ffffff;box-shadow:0 24px 60px rgba(0,0,0,.14),0 2px 8px rgba(0,0,0,.06);padding:22px 22px 16px;">
+      <div style="display:flex;align-items:baseline;justify-content:space-between;">
+        <span style="font-size:11px;font-weight:600;letter-spacing:.16em;color:#1b1b1a;">MONITOR MIRROR</span>
+        <span style="font-size:9px;letter-spacing:.12em;color:#8f8f8b;">{{countLabel}}</span>
+      </div>
+      <!-- monitors side by side -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:22px;">
+        <sc-for list="{{displays}}" as="d" hint-placeholder-count="3">
+          <div onClick="{{d.toggle}}" style="display:flex;flex-direction:column;align-items:center;gap:9px;cursor:pointer;padding:6px 2px;border-radius:10px;transition:background .2s;" style-hover="background:#f7f7f5">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:3px;">
+              <div style="width:68px;height:44px;border-radius:6px;background:{{d.screenBg}};transition:background .25s;position:relative;overflow:hidden;">
+                <div style="position:absolute;inset:0;background:{{d.screenSheen}};"></div>
+              </div>
+              <div style="width:18px;height:2px;background:{{d.standColor}};border-radius:1px;transition:background .25s;"></div>
+            </div>
+            <div style="text-align:center;">
+              <div style="font-size:9px;font-weight:600;letter-spacing:.08em;color:{{d.nameColor}};transition:color .25s;">{{d.name}}</div>
+              <div style="font-size:7.5px;letter-spacing:.08em;color:#9a9a96;margin-top:4px;">{{d.spec}}</div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <!-- footer -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:20px;">
+        <span style="font-size:8px;letter-spacing:.14em;color:#aaaaa6;">MM–01</span>
+        <div onClick="{{openSettings}}" style="font-size:8.5px;letter-spacing:.12em;color:#8f8f8b;cursor:pointer;padding:4px 0;transition:color .2s;" style-hover="color:{{accent}}">DISPLAY SETTINGS ↗</div>
+      </div>
+    </div>
+  </sc-if>
+  <sc-if value="{{toast}}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;bottom:28px;left:50%;transform:translateX(-50%);padding:8px 14px;border-radius:8px;background:#ffffff;color:#8a8a86;font-size:9px;letter-spacing:.12em;box-shadow:0 8px 24px rgba(0,0,0,.12);">OPENS SYSTEM SETTINGS → DISPLAYS</div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#FF4A00&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#FF4A00&quot;,&quot;#E03A00&quot;,&quot;#F2B300&quot;,&quot;#1B1B1A&quot;]}}">
+class Component extends DCLogic {
+  state = {
+    open: true,
+    toast: false,
+    displays: [
+      { name: 'STUDIO', spec: '5K · 60HZ', on: true },
+      { name: 'DELL', spec: '4K · 60HZ', on: true },
+      { name: 'LG', spec: 'QHD · 144HZ', on: false },
+    ],
+  };
+  renderVals() {
+    const accent = this.props.accent ?? '#FF4A00';
+    const anyOn = this.state.displays.some(d => d.on);
+    const displays = this.state.displays.map((d, i) => ({
+      name: d.name, spec: d.spec,
+      screenBg: d.on ? accent : '#ececea',
+      screenSheen: d.on ? 'linear-gradient(180deg,rgba(255,255,255,.25),rgba(255,255,255,0) 55%)' : 'none',
+      standColor: d.on ? accent : '#dcdcd8',
+      nameColor: d.on ? '#1b1b1a' : '#9a9a96',
+      toggle: (e) => { e.stopPropagation(); this.setState(s => ({ displays: s.displays.map((x, j) => j === i ? { ...x, on: !x.on } : x) })); },
+    }));
+    const nOn = this.state.displays.filter(d => d.on).length;
+    return {
+      accent, displays,
+      open: this.state.open,
+      toast: this.state.toast,
+      countLabel: nOn + '/3',
+      iconBg: this.state.open ? 'rgba(0,0,0,.09)' : 'transparent',
+      iconFill: anyOn ? accent : 'transparent',
+      togglePopover: (e) => { e.stopPropagation(); this.setState(s => ({ open: !s.open })); },
+      closePopover: () => this.setState({ open: false }),
+      stop: (e) => e.stopPropagation(),
+      openSettings: (e) => {
+        e.stopPropagation();
+        this.setState({ toast: true });
+        clearTimeout(this._tt);
+        this._tt = setTimeout(() => this.setState({ toast: false }), 2200);
+      },
+    };
+  }
+}
+</script>
+</body>
+</html>

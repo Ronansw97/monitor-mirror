@@ -1,0 +1,14 @@
+# Swift Package Manager
+.build/
+Package.resolved
+
+# App build output
+build/
+*.dSYM/
+
+# Original design-handoff bundle (spec preserved in docs/design-reference/)
+extracted/
+*.zip
+
+# macOS
+.DS_Store
